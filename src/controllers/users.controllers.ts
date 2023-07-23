@@ -10,6 +10,7 @@ import { result } from 'lodash'
 export const loginController = async (req: Request, res: Response) => {
   const user = req.user as User
   const user_id = user._id as ObjectId
+ 
   const result = await userService.login(user_id.toString())
   return res.json({
     message: USERS_MESSAGES.LOGIN_SUCCESS,

@@ -9,56 +9,66 @@ import { hashPassword } from '~/utils/crypto'
 import { verifyToken } from '~/utils/jwt'
 import { validate } from '~/utils/validation'
 
-export const loginValidator = validate(
-  checkSchema(
-    {
-      phone: {
-        isMobilePhone: {
-          errorMessage: USERS_MESSAGES.EMAIL_IS_INVALID
-        },
-        trim: true,
-        custom: {
-          options: async (value, { req }) => {
-            const user = await databaseService.users.findOne({
-              phone: value,
-              password: hashPassword(req.body.password)
-            })
-            if (user === null) {
-              throw new Error(USERS_MESSAGES.EMAIL_OR_PASSWORD_IS_INCORRECT)
+export const loginValidator = (type: string) =>
+  validate(
+    checkSchema(
+      {
+        phone: {
+          isMobilePhone: {
+            errorMessage: USERS_MESSAGES.EMAIL_IS_INVALID
+          },
+          trim: true,
+          custom: {
+            options: async (value, { req }) => {
+              let user
+              if (type === 'users') {
+                user = await databaseService.users.findOne({
+                  phone: value,
+                  password: hashPassword(req.body.password)
+                })
+              }
+              if (type === 'admins') {
+                user = await databaseService.admins.findOne({
+                  phone: value,
+                  password: hashPassword(req.body.password)
+                })
+              }
+              if (user === null) {
+                throw new Error(USERS_MESSAGES.EMAIL_OR_PASSWORD_IS_INCORRECT)
+              }
+              req.user = user
+              return true
             }
-            req.user = user
-            return true
+          }
+        },
+        password: {
+          isString: {
+            errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_A_STRING
+          },
+          notEmpty: {
+            errorMessage: USERS_MESSAGES.PASSWORD_IS_REQUIRED
+          },
+          isLength: {
+            options: {
+              max: 50,
+              min: 6
+            },
+            errorMessage: USERS_MESSAGES.PASSWORD_LENGTH_MUST_BE_FROM_6_TO_50
+          },
+          isStrongPassword: {
+            errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_STRONG,
+            options: {
+              minLength: 6,
+              minLowercase: 1,
+              minUppercase: 1,
+              minSymbols: 1
+            }
           }
         }
       },
-      password: {
-        isString: {
-          errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_A_STRING
-        },
-        notEmpty: {
-          errorMessage: USERS_MESSAGES.PASSWORD_IS_REQUIRED
-        },
-        isLength: {
-          options: {
-            max: 50,
-            min: 6
-          },
-          errorMessage: USERS_MESSAGES.PASSWORD_LENGTH_MUST_BE_FROM_6_TO_50
-        },
-        isStrongPassword: {
-          errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_STRONG,
-          options: {
-            minLength: 6,
-            minLowercase: 1,
-            minUppercase: 1,
-            minSymbols: 1
-          }
-        }
-      }
-    },
-    ['body']
+      ['body']
+    )
   )
-)
 
 export const registerValidator = validate(
   checkSchema({
@@ -197,7 +207,7 @@ export const refreshTokenValidator = validate(
                 verifyToken({ token: value }),
                 databaseService.refreshToken.findOne({ token: value })
               ])
-              if (refresh_token === null){
+              if (refresh_token === null) {
                 throw new ErrorWithStatus({
                   message: USERS_MESSAGES.USED_REFRESH_TOKEN_OR_NOT_EXIST,
                   status: HTTP_STATUS.UNAUTHORIZED
