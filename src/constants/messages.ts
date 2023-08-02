@@ -63,3 +63,9 @@ export const USERS_MESSAGES = {
   UPLOAD_SUCCESS: 'Upload success',
   REFRESH_TOKEN_SUCCESS: 'Refresh token success'
 } as const
+export const BOOKING_MESSAGE = {
+  PICKUPLOCATION_IS_REQUIRED: 'Pickup location is required',
+  DESTINATION_IS_REQUIRED: 'Pickup location is required',
+  PICKUPLOCATION_IS_INVALID: 'Pickup locaiton is not valid',
+  DESTINATION_IS_INVALID: 'Destination is not valid'
+} as const
