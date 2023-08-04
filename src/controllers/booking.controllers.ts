@@ -13,8 +13,5 @@ export const bookingController = async (req: Request, res: Response, next: NextF
 
     socket.emit('bookingdriver', bookingInfo)
   })
-  return res.json({
-    message: 'Booking Success',
-    result
-  })
+  return res.json(result)
 }
