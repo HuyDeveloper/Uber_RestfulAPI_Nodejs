@@ -5,9 +5,8 @@ import databaseService from '~/services/database.services'
 import { defaultErrorHandler } from './middlewares/errors.middleware'
 import cors from 'cors'
 
-import { httpServer, io } from './middlewares/socket.middleware'
+import { httpServer, io, app } from '~/middlewares/socket.middleware'
 
-const app = express()
 const port = 3000
 
 databaseService.connect()

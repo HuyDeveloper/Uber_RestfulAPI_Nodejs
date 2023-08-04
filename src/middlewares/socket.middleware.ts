@@ -1,7 +1,8 @@
 import { createServer } from 'http'
 import { Server } from 'socket.io'
-
-const httpServer = createServer()
+import express from 'express'
+const app = express()
+const httpServer = createServer(app)
 
 const io = new Server(httpServer, {
   /* options */
@@ -19,4 +20,4 @@ io.on('connection', (socket) => {
   })
 })
 
-export { httpServer, io }
+export { httpServer, io, app }

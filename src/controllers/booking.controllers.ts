@@ -5,6 +5,7 @@ import { io } from '~/middlewares/socket.middleware'
 export const bookingController = async (req: Request, res: Response, next: NextFunction) => {
   const bookingInfo = req.body
   const result = await bookingService.booking(bookingInfo)
+  console.log('booking controller: ', bookingInfo)
   io.on('connection', (socket) => {
     console.log(`User ${socket.id} connected`)
     socket.on('disconnect', () => {
