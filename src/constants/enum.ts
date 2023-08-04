@@ -10,3 +10,10 @@ export enum TokenType {
   ForgotPasswordToken,
   EmailVerifyToken
 }
+
+export enum VerhicleType {
+  None,
+  Motorbike,
+  Car4Seats,
+  Car7Seats
+}

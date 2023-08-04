@@ -1,7 +1,7 @@
 import { validate } from '~/utils/validation'
 import { checkSchema } from 'express-validator'
 import { BOOKING_MESSAGE, USERS_MESSAGES } from '~/constants/messages'
-
+import { io } from './socket.middleware' // sử dụng bắn socket ở đây
 export const bookingValidator = validate(
   checkSchema({
     pickupLocation: {
@@ -46,6 +46,11 @@ export const bookingValidator = validate(
         errorMessage: USERS_MESSAGES.EMAIL_IS_REQUIRED
       },
       trim: true
+    },
+    typeVerhicle: {
+      notEmpty: {
+        errorMessage: 'You must choose type of verhicle'
+      }
     }
   })
 )
