@@ -4,7 +4,6 @@ import Booking from '~/models/schemas/Booking.schema'
 class BookingService {
   async booking(payload: BookingReqBody){
     const result = await databaseService.booking.insertOne(new Booking({ ...payload }))
-
   }
 }
 
