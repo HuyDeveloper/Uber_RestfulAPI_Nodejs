@@ -33,6 +33,12 @@ export const loginValidator = (type: string) =>
                   password: hashPassword(req.body.password)
                 })
               }
+              if (type === 'drivers') {
+                user = await databaseService.drivers.findOne({
+                  phone: value,
+                  password: hashPassword(req.body.password)
+                })
+              }
               if (user === null) {
                 throw new Error(USERS_MESSAGES.EMAIL_OR_PASSWORD_IS_INCORRECT)
               }

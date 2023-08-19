@@ -32,6 +32,9 @@ class DatabaseService {
   get admins(): Collection<User> {
     return this.db.collection(process.env.DB_ADMINS_COLLECTION as string)
   }
+  get drivers(): Collection<User> {
+    return this.db.collection(process.env.DB_DRIVERS_COLLECTION as string)
+  }
   get refreshToken(): Collection<RefreshToken> {
     return this.db.collection(process.env.DB_REFRESHTOKEN_COLLECTION as string)
   }

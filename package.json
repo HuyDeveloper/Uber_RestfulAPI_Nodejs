@@ -34,8 +34,10 @@
     "typescript": "^5.1.3"
   },
   "dependencies": {
+    "@types/amqplib": "^0.10.1",
     "@types/cors": "^2.8.13",
     "@types/lodash": "^4.14.195",
+    "amqplib": "^0.10.3",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",

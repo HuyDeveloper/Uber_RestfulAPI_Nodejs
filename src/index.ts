@@ -15,7 +15,6 @@ app.get('/', (req, res) => {
   res.send('hello world')
 })
 app.use(express.json())
-
 app.use('/users', userRouter)
 app.use('/booking', bookingRouter)
 app.use(defaultErrorHandler)
