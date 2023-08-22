@@ -13,6 +13,7 @@ export const loginController = async (req: Request, res: Response) => {
  
   const result = await userService.login(user_id.toString())
   return res.json({
+    user,
     message: USERS_MESSAGES.LOGIN_SUCCESS,
     result
   })

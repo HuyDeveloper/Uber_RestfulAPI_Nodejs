@@ -66,6 +66,7 @@ class UserService {
       user_id,
       verify: UserVerifyStatus.Unverified
     })
+
     databaseService.refreshToken.insertOne(new RefreshToken({ user_id: new ObjectId(user_id), token: refresh_token }))
     return {
       access_token,
