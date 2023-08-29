@@ -1,68 +1,45 @@
-import amqplib from 'amqplib'
-import dotenv from 'dotenv'
+/* eslint-disable @typescript-eslint/no-inferrable-types */
+import amqp from 'amqplib'
 const amqp_url_cloud = process.env.RABBITMQ_CLOUD as string
+// Connection URL
+const connectionUrl = 'amqp://localhost'
+
+// Queue name
+const queueName = 'myQueue'
 
 class RabbitMQService {
+  public messageReceive: string = ''
   async sendMsg({ msg }: { msg: string }) {
     try {
-      const conn = await amqplib.connect(amqp_url_cloud)
-      const channel = await conn.createChannel()
-      // const queue = 'booking'
-      // await channel.assertQueue(queue, {
-      //   durable: true //không mât queue khi rabbitmq bị tắt
-      // })
-      // await channel.sendToQueue(queue, Buffer.from(msg),{
-      //   expiration: '10000', //time to live
-      //   persistent: true //lưu lại khi rabbitmq bị tắt
-      // })
-
-      //create exchange
-      const nameExchange = 'booking'
-      await channel.assertExchange(nameExchange, 'fanout', { durable: false })
-      await channel.publish(nameExchange, '', Buffer.from(msg))
-      console.log(`Send: ${msg}`)
-      setTimeout(function () {
-        conn.close()
-        process.exit(0)
-      }, 2000)
+      // Create connection
+      const connection = await amqp.connect(connectionUrl)
+      const channel = await connection.createChannel()
+      await channel.assertQueue(queueName, { durable: true })
+      channel.sendToQueue(queueName, Buffer.from(msg), { persistent: true })
+      await channel.close()
+      await connection.close()
     } catch (error) {
-      console.log(error)
+      console.error('Error occurred while publishing message:', error)
     }
   }
 
   async receiveMsg() {
     try {
-      const conn = await amqplib.connect(amqp_url_cloud)
-      const channel = await conn.createChannel()
-      // const queue = 'booking'
-      // await channel.assertQueue(queue, {
-      //   durable: true
-      // })
-      // await channel.consume(
-      //   queue,
-      //   (msg) => {
-      //     console.log(msg)
-      //   },
-      //   {
-      //     noAck: true
-      //   }
-      // )
-      const nameExchange = 'booking'
-      await channel.assertExchange(nameExchange, 'fanout', { durable: false })
-      const { queue } = await channel.assertQueue('', { exclusive: true })
-      console.log(queue)
-      await channel.bindQueue(queue, nameExchange, '')
+      const connection = await amqp.connect(connectionUrl)
+      const channel = await connection.createChannel()
+      await channel.assertQueue(queueName, { durable: true })
       await channel.consume(
-        queue,
+        queueName,
         (msg) => {
-          console.log(msg)
+          console.log('Received message:', (msg as amqp.Message).content.toString())
+          this.messageReceive = (msg as amqp.Message).content.toString()
+          channel.ack(msg as amqp.Message)
+          channel.close()
         },
-        {
-          noAck: true
-        }
+        { noAck: false }
       )
     } catch (error) {
-      console.log(error)
+      console.error('Error occurred while consuming messages:', error)
     }
   }
 }

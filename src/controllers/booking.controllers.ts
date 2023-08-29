@@ -9,14 +9,13 @@ export const bookingController = async (req: Request, res: Response, next: NextF
   const result = await bookingService.booking(bookingInfo)
   console.log(bookingInfo)
 
-  // const msgs = rabbitMQService.sendMsg({ msg: 'Hello' })
-  // io.on('connection', (socket) => {
-  //   console.log(`User ${socket.id} connected`)
-  //   socket.emit('bookingdriver', bookingInfo)
-  //   socket.on('disconnect', () => {
-  //     console.log(`User ${socket.id} disconnected`)
-  //   })
-  // })
+  rabbitMQService.sendMsg({ msg: bookingInfo.toString() })
   SOCKET.emit('bookingdriver', bookingInfo)
   return res.json(result)
+}
+
+export const acceptController = async (req: Request, res: Response) => {
+  rabbitMQService.receiveMsg()
+  console.log(rabbitMQService.messageReceive)
+  return res.json(rabbitMQService.messageReceive)
 }

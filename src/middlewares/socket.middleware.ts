@@ -13,12 +13,7 @@ io.on('connection', (socket) => {
   console.log(`User ${socket.id} connected`)
   SOCKET = socket
   socket.on('disconnect', () => {
-    console.log(1)
     console.log(`User ${socket.id} disconnected`)
-  })
-
-  socket.on('hello', (arg) => {
-    console.log(arg) // world
   })
 })
 
