@@ -1,7 +1,7 @@
 import { validate } from '~/utils/validation'
 import { checkSchema } from 'express-validator'
 import { BOOKING_MESSAGE, USERS_MESSAGES } from '~/constants/messages'
-import { io } from './socket.middleware' // sử dụng bắn socket ở đây
+
 export const bookingValidator = validate(
   checkSchema({
     pickupLocation: {
@@ -32,7 +32,7 @@ export const bookingValidator = validate(
       isLength: {
         options: {
           min: 1,
-          max: 100
+          max: 1000
         },
         errorMessage: USERS_MESSAGES.CONFIRM_PASSWORD_LENGTH_MUST_BE_FROM_6_TO_50
       },
