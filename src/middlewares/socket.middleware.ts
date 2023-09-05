@@ -15,6 +15,11 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log(`User ${socket.id} disconnected`)
   })
+  socket.on('driverInfo', (data) => {
+    delete data['password']
+    console.log(data)
+    SOCKET.emit('sendDriverInfo', data)
+  })
 })
 
 export { httpServer, io, app, SOCKET }
