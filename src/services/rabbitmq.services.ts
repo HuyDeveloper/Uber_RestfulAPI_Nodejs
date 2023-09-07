@@ -5,13 +5,16 @@ const amqp_url_cloud = process.env.RABBITMQ_CLOUD as string
 const connectionUrl = 'amqp://localhost'
 
 // Queue name
-const queueName = 'myQueue'
+// const queueName = 'myQueue'
 
 class RabbitMQService {
   public messageReceive: string = ''
   async sendMsg({ msg }: { msg: string }) {
     try {
+      const temp = JSON.parse(msg)
+      console.log(temp.typeVerhicle)
       // Create connection
+      const queueName = temp.typeVerhicle
       const connection = await amqp.connect(connectionUrl)
       const channel = await connection.createChannel()
       await channel.assertQueue(queueName, { durable: true })
@@ -23,25 +26,25 @@ class RabbitMQService {
     }
   }
 
-  async receiveMsg() {
-    try {
-      const connection = await amqp.connect(connectionUrl)
-      const channel = await connection.createChannel()
-      await channel.assertQueue(queueName, { durable: true })
-      await channel.consume(
-        queueName,
-        (msg) => {
-          console.log('Received message:', (msg as amqp.Message).content.toString())
-          this.messageReceive = (msg as amqp.Message).content.toString()
-          channel.ack(msg as amqp.Message)
-          channel.close()
-        },
-        { noAck: false }
-      )
-    } catch (error) {
-      console.error('Error occurred while consuming messages:', error)
-    }
-  }
+  // async receiveMsg(queueName: string) {
+  //   try {
+  //     const connection = await amqp.connect(connectionUrl)
+  //     const channel = await connection.createChannel()
+  //     await channel.assertQueue(queueName, { durable: true })
+  //     await channel.consume(
+  //       queueName,
+  //       (msg) => {
+  //         console.log('Received message:', (msg as amqp.Message).content.toString())
+  //         this.messageReceive = (msg as amqp.Message).content.toString()
+  //         channel.ack(msg as amqp.Message)
+  //         channel.close()
+  //       },
+  //       { noAck: false }
+  //     )
+  //   } catch (error) {
+  //     console.error('Error occurred while consuming messages:', error)
+  //   }
+  // }
 }
 
 const rabbitMQService = new RabbitMQService()

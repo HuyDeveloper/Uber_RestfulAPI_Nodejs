@@ -11,7 +11,7 @@ interface UserType {
   email_veriry_token?: string
   forgot_password_token?: string
   verify?: UserVerifyStatus
-  typeVerhicles?: VerhicleType
+  typeVerhicle?: VerhicleType
 
   bio?: string
   location?: string
@@ -32,7 +32,7 @@ export default class User {
   email_veriry_token: string
   forgot_password_token: string
   verify: UserVerifyStatus
-  typeVerhicles: VerhicleType
+  typeVerhicle: VerhicleType
 
   bio:string
   location:string
@@ -53,7 +53,7 @@ export default class User {
     this.forgot_password_token = user.forgot_password_token||''
 
     this.verify = user.verify || UserVerifyStatus.Unverified
-    this.typeVerhicles = user.typeVerhicles || VerhicleType.None
+    this.typeVerhicle = user.typeVerhicle || VerhicleType.None
     this.bio = user.bio || ''
     this.location = user.location|| ''
     this.website = user.website|| ''

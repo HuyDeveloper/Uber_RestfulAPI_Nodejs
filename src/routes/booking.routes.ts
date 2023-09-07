@@ -5,5 +5,5 @@ import { bookingController, acceptController } from '~/controllers/booking.contr
 const router = express.Router()
 
 router.post('/booking-service', bookingValidator, wrapRequestHandler(bookingController))
-router.get('/accept-booking', wrapRequestHandler(acceptController))
+router.get('/accept-booking/:id', wrapRequestHandler(acceptController))
 export default router

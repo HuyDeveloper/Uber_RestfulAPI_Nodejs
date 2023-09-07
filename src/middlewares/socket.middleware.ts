@@ -18,7 +18,7 @@ io.on('connection', (socket) => {
   socket.on('driverInfo', (data) => {
     delete data['password']
     console.log(data)
-    SOCKET.emit('sendDriverInfo', data)
+    SOCKET.emit(`${data.cusPhone}`, data)
   })
 })
 

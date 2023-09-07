@@ -14,6 +14,6 @@ export enum TokenType {
 export enum VerhicleType {
   None = 'None',
   Motorbike = 'Motorbike',
-  Car4Seats = 'Car4Seats',
-  Car7Seats = 'Car7Seats'
+  Car4Seats = 'Car 4 Seats',
+  Car7Seats = 'Car 7  Seats'
 }
