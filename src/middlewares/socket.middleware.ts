@@ -12,14 +12,18 @@ const io = new Server(httpServer, {
 io.on('connection', (socket) => {
   console.log(`User ${socket.id} connected`)
   SOCKET = socket
-  socket.on('disconnect', () => {
-    console.log(`User ${socket.id} disconnected`)
-  })
+
   socket.on('driverInfo', (data) => {
     delete data['password']
     console.log(data)
-    SOCKET.emit(`${data.cusPhone}`, data)
+    console.log(data.cusPhone)
+    io.emit(`${data.cusPhone}`, data)
   })
+
+  socket.on('disconnect', () => {
+    console.log(`User ${socket.id} disconnected`)
+  })
+
 })
 
 export { httpServer, io, app, SOCKET }
