@@ -15,10 +15,12 @@ io.on('connection', (socket) => {
 
   socket.on('driverInfo', (data) => {
     delete data['password']
-    console.log(data)
-    console.log(data.cusPhone)
     io.emit(`${data.cusPhone}`, data)
   })
+  // socket.on('driverGPS', (data) => {
+  //   console.log(data)
+  //   io.emit(`${data.cusPhone}driverGPS`, data)
+  // })
 
   socket.on('disconnect', () => {
     console.log(`User ${socket.id} disconnected`)
