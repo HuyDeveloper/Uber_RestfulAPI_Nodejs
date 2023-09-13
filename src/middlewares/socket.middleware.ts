@@ -21,6 +21,10 @@ io.on('connection', (socket) => {
   //   console.log(data)
   //   io.emit(`${data.cusPhone}driverGPS`, data)
   // })
+  socket.on('finishTrip', (data) => {
+    io.emit(`${data.phone}finishTrip`, data)
+    console.log(data)
+  })
 
   socket.on('disconnect', () => {
     console.log(`User ${socket.id} disconnected`)

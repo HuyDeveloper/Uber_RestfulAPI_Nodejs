@@ -5,6 +5,7 @@ class BookingService {
   async booking(payload: BookingReqBody){
     const result = await databaseService.booking.insertOne(new Booking({ ...payload }))
     return {
+      result,
       message: 'Booking success'
     }
   }
